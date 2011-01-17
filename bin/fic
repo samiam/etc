@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+# -*- ruby -*-
+
+begin
+  require 'rubygems'
+rescue LoadError
+end
+
+exts = ['.rb', '.rhtml']
+if ARGV[0] =~ /^\.[a-zA-Z0-9]+$/
+  exts = []
+  while ARGV[0] =~ /^\.[a-zA-Z0-9]+$/
+    exts << ARGV.shift
+  end
+end
+
+ext = "{" + exts.join(',') + "}"
+
+if ARGV.size < 1
+  puts "Usage: #{File.basename($0)} [.ext ...] pattern ..."
+  exit 1
+end
+
+require 'rake'
+FileList["**/*#{ext}"].egrep(Regexp.new(ARGV.join('.*'), Regexp::IGNORECASE))

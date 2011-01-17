@@ -1,0 +1,8 @@
+#!/bin/sh
+
+emacsclient $* 2> /dev/null || \
+#rxvt -e vi $*   || \
+#xterm -fn fixed -bg white -fg black -e vi $*  || \
+vi $*
+
+exit 0

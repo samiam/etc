@@ -1,0 +1,13 @@
+#!/bin/sh
+# Grep through files ignoring .svn files, backup files
+
+if [ "$1" = "all" ]; then
+shift
+find . -type d \( -name .svn -o -name log -o -name .git \) -prune \
+       -o -type f -name "*~" -o -type f -print0 | xargs -0 grep -E "$@"
+else
+find . -type d \( -name .svn -o -name log -o -name .git -o -name db -o -name ckeditor \) -prune \
+       -o -type f -name "*~" -o -type f -print0 | xargs -0 grep -E "$@"
+fi
+
+#svn list -R | xargs grep -E "$@"
