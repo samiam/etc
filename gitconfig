@@ -1,0 +1,21 @@
+[user]
+    name = Sam
+
+[color]
+    diff = auto
+    branch = auto
+    status = auto
+
+[diff]
+    renames = true
+
+[alias]
+    st = status
+    ci = commit -v
+    co = checkout
+    l = log
+    ll = log -p
+    lm = log master..
+    llm = log -p master..
+    b = branch
+
