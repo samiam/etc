@@ -1,0 +1,7 @@
+#!/bin/sh -x
+
+ssh -f -L 59001:localhost:5901 joentim@joentim  \
+        x11vnc -clip  xinerama0 -safer -localhost -nopw -once -noxdamage -ncache 10 -noscr -xkb -display :0 
+#        && sleep 3 \
+#        && vncviewer FullColor=1 PreferredEncoding="ZRLE" :59001
+
