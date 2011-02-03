@@ -12,6 +12,9 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias wh='type -a'
 alias suu='ssh root@$HOSTNAME'
+if [ "`uname -s`" = "Darwin" ]; then
+   alias md5sum=md5
+fi
 
 # To see all files _not_ ending in extension. eg. *.gz
 # shopt -s extglob; ls -d !(*.gz)
@@ -42,51 +45,6 @@ function zedit () {
   fi
 }
 
-# Taken from blue:/usr/dist/pkgs/cue/env/std/verifypath and converted to sh
-function verifypath () {
-
-     pathlist=`echo $1 | sed 's/:/ /g'`
-     if [ -z "$pathlist" ]; then
-        echo ""; exit 1;
-     fi
-
-     # Remove Redundant Pathnames
-     filtered=""
-     for nf in $pathlist
-     do
-       redundant=no
-       for f in $filtered
-       do
-	 if [ "$nf" = "$f" ]; then
-	     redundant=yes
-	 fi
-       done
-       if [ "$redundant" != "yes" ]; then
-	 filtered="$filtered $nf"
-       fi
-     done
-
-     pathlist="$filtered"
-
-     # Verify pathlist
-     # Validate existing directories
-     newpath=""
-     for dir in $pathlist
-     do
-       if [ -d "$dir" ]; then
-	 if [ -z "$newpath" ]; then
-	     newpath="$dir"
-	 else
-	     newpath="${newpath}:${dir}"
-	 fi
-       fi
-     done
-
-     # Return Verified Path
-     echo $newpath
-}
-
-
 #
 # Shell environment
 #
@@ -104,7 +62,7 @@ cdable_vars=            # allow shell variables to be cd-able directories
 FIGNORE=".o:~"		# don't tab complete on these files
 
 # Command history
-HISTFILE=$HOME/etc/bash_history.$USER  # keep history files separate
+HISTFILE=$HOME/.bash_history.$USER  # keep history files separate
 HISTCONTROL=ignoredups	        # don't keep duplicate entries in history
 command_oriented_history= 	# save multi-line cmds in one history entry
 HISTFILESIZE=20000  		# how much to remember on logout?
@@ -116,62 +74,30 @@ VISUAL=$EDITOR
 # VI settings  - wm=wrap margins at 70-char
 EXINIT='set redraw wm=10 showmode showmatch'
 LESS="$LESS -RqeiPm?f%f:<stdin> .?pb (%pb\%) .?m(file %i of %m)..?e(END) ?x- Next\: %x..%t" 
-LESSHISTFILE=$HOME/etc/lesshst
-#PRINTER=HP_DESKJET_895C_USB_1
-MYSQL_HISTFILE=$HOME/etc/mysql_history.$USER
-MAIL=/var/mail/sam
-VBOX_USER_HOME=/home/vbox
+MYSQL_HISTFILE=$HOME/.mysql_history.$USER
 
 set +a
+
+# Amazon S3
+if [ -f "$HOME/.ssh/aws/s3keys" ]; then
+   source "$HOME/.ssh/aws/s3keys"
+fi
 
 #
 # Path environment
 #
-
-#function ferrari-i386 () {
-function blissrun () {
-  set -a	 
-
-  # Amazon S3
-  if [ -f "$HOME/etc/ec2/s3keys" ]; then
-     source "$HOME/etc/ec2/s3keys"
-  fi
-
-  # IRB
-  IRBRC=$HOME/etc/irbrc
-
-  # /var/lib/gems/1.8/bin/
-
-  set +a
-}
-
-function gem_home () {
-  tmp=$(gem env | grep INSTALLATION | awk '{ print $NF }')
-  echo $tmp
-}
-
-# Kernel OS
-case "`uname -s`" in
-          *)      OSPATH=/usr/local/sbin:/usr/local/bin
-                  OSPATH=$OSPATH:/sbin:/usr/sbin:/bin:/usr/bin
-                  ;;
-esac
-
-
-# Host OS
-case "$HOSTNAME" in
-  #ferrari-i386)   $HOSTNAME
-  blissrun)   $HOSTNAME
-                  HOSTPATH=$EC2_HOME/bin:$JAVA_HOME/bin:$JRUBY_HOME/bin
-                  HOSTPATH=$HOSTPATH:`gem_home`/bin
-                  ;;
-esac
-
-PATH="`verifypath $HOME/bin:$HOSTPATH:$OSPATH:$PATH`"
+PATH="$HOME/bin:$PATH"
 export PATH
 
 # Clean up local vars
-unset HOSTPATH OSPATH
-unset verifypath
-unset -f ferrari-i386
 unset -f zedit
+
+# RVM
+if [[ -s '/usr/local/lib/rvm' ]]; then
+   source '/usr/local/lib/rvm'
+   [[ -r $rvm_path/scripts/completion ]] && . $rvm_path/scripts/completion
+
+   # Insert colon after prompt b/f path when not using system ruby
+   my_rvm_prompt() { [[ -n $(rvm-prompt) ]] && echo "$(rvm-prompt):"; }
+   export PS1='\h[$(my_rvm_prompt)\w]\$ '
+fi
