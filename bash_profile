@@ -6,7 +6,7 @@
 [ ! "$PS1" ] && return 0
 
 # Aliases
-alias ls='ls -CF'
+alias ls='ls -CFH'
 alias m=less
 alias cp='cp -i'
 alias mv='mv -i'
@@ -99,5 +99,10 @@ if [[ -s '/usr/local/lib/rvm' ]]; then
 
    # Insert colon after prompt b/f path when not using system ruby
    my_rvm_prompt() { [[ -n $(rvm-prompt) ]] && echo "$(rvm-prompt):"; }
-   export PS1='\h[$(my_rvm_prompt)\w]\$ '
+
+   if [ "`whoami`" != "root" ]; then
+      export PS1='\h[$(my_rvm_prompt)\w]\$ '
+   else
+      export PS1='\h[\w]\$ '
+   fi
 fi

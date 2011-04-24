@@ -12,6 +12,7 @@
 (setq fill-column 70)                        ; 70 cols
 (setq scroll-step 1)                         ; scroll x lines b/t pages
 (setq inhibit-startup-message t)             ; not again
+(setq initial-scratch-message nil)           ; and again
 ;(setq display-time-day-and-date t)           ; show date with time
 ;(setq require-final-newline t)               ; end file with a newline
 (setq next-line-add-newlines nil)            ; stop at EOF & don't add \n
@@ -32,8 +33,18 @@
 
 ;(set-default-font "fixed")
 ;(set-default-font "-*-lucidatypewriter-medium-r-*-*-14-*-*-*-*-*-*-*")
-;(set-default-font "lucidasanstypewriter-12")
-(set-default-font "-bitstream-bitstream vera sans mono-medium-r-*-*-*-*-*-*-*-*-*-*")
+(set-default-font "lucidasanstypewriter-12")
+;(set-default-font "-bitstream-bitstream vera sans mono-medium-r-*-*-*-*-*-*-*-*-*-*")
+;(set-default-font "Inconsolata-14")
+
+;; Swap alt and command on mac
+(when (eq system-type 'darwin)
+  (setq mac-option-key-is-meta nil)
+  (setq mac-command-key-is-meta t)
+  (setq mac-command-modifier 'meta)
+  (setq mac-option-modifier nil))
+
+(setq delete-by-moving-to-trash t)       ; delete by moving to trash
 
 ;; Subprocess
 ;; ***************************************************************
@@ -68,8 +79,10 @@
                 )
               auto-mode-alist))
 
+;; Package setups
 (require 'tramp)
 (setq tramp-default-method "scp")
+
 
 ;; Path settings
 ;; ***************************************************************
@@ -77,3 +90,19 @@
 
 (load "~/.emacs.d/functions.el")
 (load "~/.emacs.d/bindings.el")
+
+
+;;; This was installed by package-install.el.
+;;; This provides support for the package system and
+;;; interfacing with ELPA, the package archive.
+;;; Move this code earlier if you want to reference
+;;; packages in your .emacs.
+(when
+    (load
+     (expand-file-name "~/.emacs.d/elpa/package.el"))
+  (package-initialize))
+
+;(add-to-list 'package-archives
+;             '("marmalade" . "http://marmalade-repo.org/packages/") t)
+
+;(slime-setup '(slime-repl))
