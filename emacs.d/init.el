@@ -23,6 +23,7 @@
 (setq font-lock-maximum-decoration t)        ; go all out with color
 ;(setq font-lock-support-mode 'lazy-lock-mode)
 (setq lazy-lock-defer-time 1)                ; give it a sec
+(set-scroll-bar-mode 'right)
 
 (put 'upcase-region 'disabled nil)      ; C-x C-u uppercase region
 (put 'downcase-region 'disabled nil)    ; C-x C-l lowercase region
@@ -30,6 +31,9 @@
 (line-number-mode t)
 (column-number-mode t)
 (savehist-mode t)                       ; store minibuffer b/t sessions
+
+(setq backup-directory-alist
+   '(("." . "~/etc/emacs.d/emacs_backups")))
 
 ;(set-default-font "fixed")
 ;(set-default-font "-*-lucidatypewriter-medium-r-*-*-14-*-*-*-*-*-*-*")
@@ -68,6 +72,11 @@
 ;; ***************************************************************
 (setq auto-mode-alist
       (append (list
+               '("\\.xqy$"  . xquery-mode)
+               '("\\.xslt$"  . nxml-mode)
+               '("\\.xml$"  . nxml-mode)
+               '("\\.xsh$"  . shell-script-mode)
+               '("\\.rb$"  . ruby-mode)
                '("\\.pro$"  . prolog-mode)
                '("\\.ss$"   . scheme-mode)
                '("\\.html$" . html-helper-mode)
@@ -79,6 +88,7 @@
                 )
               auto-mode-alist))
 
+
 ;; Package setups
 (require 'tramp)
 (setq tramp-default-method "scp")
@@ -88,8 +98,22 @@
 ;; ***************************************************************
 ;(add-to-list 'load-path (expand-file-name "~/etc/emacs.d"))
 
-(load "~/.emacs.d/functions.el")
-(load "~/.emacs.d/bindings.el")
+(message "* --[ Loading my Emacs init file ]--")
+
+;; Path settings
+;; ***************************************************************
+(add-to-list 'load-path (expand-file-name "~/etc/emacs.d"))
+
+(load "functions.el")
+(load "bindings.el")
+(load "ruby-mode.el")
+;(load "xquery-mode.el")
+
+; https://github.com/mblakele/xquery-mode.git
+(load "xquery-mode2.el")
+
+;(load "~/.emacs.d/functions.el")
+;(load "~/.emacs.d/bindings.el")
 
 
 ;;; This was installed by package-install.el.

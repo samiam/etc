@@ -72,6 +72,22 @@
   (delete-backward-char 3)
   (forward-line))
 
+(defun xquery-comment-line ()
+  (interactive)
+  (beginning-of-line)
+  (insert "(: ")
+  (end-of-line)
+  (insert " :)")
+  (forward-line))
+
+(defun xquery-uncomment-line ()
+  (interactive)
+  (beginning-of-line)
+  (delete-char 3)
+  (end-of-line)
+  (delete-backward-char 3)
+  (forward-line))
+
 ; get these working - take an arbitrary char or better a function
 ; like c-comment-line
 (defun quote-region2 (x y str)
@@ -127,3 +143,9 @@
 
 (global-set-key [?\C-x ?\C-y] 'pt-pbpaste)
 (global-set-key [?\C-x ?\M-w] 'pt-pbcopy)
+
+ (defun remove-dos-eol ()
+  "Do not show ^M in files containing mixed UNIX and DOS line endings."
+  (interactive)
+  (setq buffer-display-table (make-display-table))
+  (aset buffer-display-table ?\^M []))

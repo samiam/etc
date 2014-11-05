@@ -6,18 +6,24 @@
 [ ! "$PS1" ] && return 0
 
 # Aliases
-alias ls='ls -CFH'
+if [ "$HOSTTYPE" = "x86_64" ]; then
+  alias ls="ls -CF --color"
+else
+  alias ls='ls -CFH'
+fi
+# Number files in dir
+alias lsc="ruby -e 'ARGV.each { |d|
+  puts Dir.open(d).entries.count - 2 if File.directory?(d)
+}'"
 alias m=less
 alias cp='cp -ip'
 alias mv='mv -i'
 alias wh='type -a'
+alias bcd='builtin cd'
 alias suu='ssh root@$HOSTNAME'
 if [ "`uname -s`" = "Darwin" ]; then
    alias md5sum=md5
 fi
-
-# To see all files _not_ ending in extension. eg. *.gz
-# shopt -s extglob; ls -d !(*.gz)
 
 # Functions
 # ls after cd
@@ -45,6 +51,13 @@ function zedit () {
   fi
 }
 
+function long_path () {
+  tmp=$(pwd)
+  if [ ${#tmp} -gt 50 ]; then
+    export  PS1='\u@\h[\W]\$ '    # set the main prompt
+  fi
+}
+
 #
 # Shell environment
 #
@@ -61,6 +74,10 @@ auto_resume=            # resume existing jobs instead of creating new ones
 cdable_vars=            # allow shell variables to be cd-able directories
 FIGNORE=".o:~"		# don't tab complete on these files
 
+shopt -s checkwinsize   # checks the window size
+shopt -s extglob        # extended glob; ls -d *[!.gz] list files w/o .gz ext
+
+
 # Command history
 HISTFILE=$HOME/.bash_history.$USER  # keep history files separate
 HISTCONTROL=ignoredups	        # don't keep duplicate entries in history
@@ -71,10 +88,25 @@ HISTSIZE=20000  		# how much to remember in session?
 # Program settings
 EDITOR=`zedit`                  # what's my favorite editor?
 VISUAL=$EDITOR	
+
 # VI settings  - wm=wrap margins at 70-char
 EXINIT='set redraw wm=10 showmode showmatch'
-LESS="$LESS -RqeiPm?f%f:<stdin> .?pb (%pb\%) .?m(file %i of %m)..?e(END) ?x- Next\: %x..%t" 
-MYSQL_HISTFILE=$HOME/.mysql_history.$USER
+
+# Less
+LESS="-XRqeiPm?f%f:<stdin> .?pb (%pb\%) .?m(file %i of %m)..?e(END) ?x- Next\: %x..%t"
+LESSHISTFILE=$HOME/etc/lesshst
+
+# Colorize man pages via less
+# https://wiki.archlinux.org/index.php/Man_Page
+LESS_TERMCAP_mb=$(printf "\e[1;31m")
+LESS_TERMCAP_md=$(printf "\e[1;31m")
+LESS_TERMCAP_me=$(printf "\e[0m")
+LESS_TERMCAP_se=$(printf "\e[0m")
+LESS_TERMCAP_so=$(printf "\e[1;44;33m")
+LESS_TERMCAP_ue=$(printf "\e[0m")
+LESS_TERMCAP_us=$(printf "\e[1;32m")
+
+RSYNC_RSH="ssh"
 
 set +a
 
