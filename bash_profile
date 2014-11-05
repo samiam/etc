@@ -8,7 +8,7 @@
 # Aliases
 alias ls='ls -CFH'
 alias m=less
-alias cp='cp -i'
+alias cp='cp -ip'
 alias mv='mv -i'
 alias wh='type -a'
 alias suu='ssh root@$HOSTNAME'
