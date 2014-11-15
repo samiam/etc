@@ -6,7 +6,7 @@
 [ ! "$PS1" ] && return 0
 
 # Aliases
-if [ "$HOSTTYPE" = "x86_64" ]; then
+if [ "$HOSTTYPE" = "x86_64" -a $(uname -s) != "Darwin" ]; then
   alias ls="ls -CF --color"
 else
   alias ls='ls -CFH'
