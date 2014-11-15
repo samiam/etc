@@ -1,0 +1,37 @@
+#!/bin/bash
+# Setup dotfile links from etc to HOME dir
+# cd to etc dir and run script
+
+function relative () {
+    perl -e 'use File::Spec; print File::Spec->abs2rel(@ARGV) . "\n"' $1 $2
+}
+
+function safe_link () {
+  src="$PWD/$1"
+  dst="$HOME/$2"
+
+  if [ -e $dst ]; then
+    echo dst file already exists: $dst
+    return
+  fi
+  if [ -e $src ]; then
+    s=$(relative $src $HOME)
+    echo Linking $s to $dst
+    ln -s $s $dst
+  else
+    echo src file does not exist: $src
+  fi
+}
+
+# Bash
+safe_link bash_profile         .bash_profile
+safe_link bashrc               .bashrc
+
+# Emacs
+safe_link emacs.d              .emacs.d
+safe_link emacs.d/dotemacs.el  .emacs
+
+# Git/Ruby
+safe_link gitconfig            .gitconfig
+safe_link irbrc                .irbrc
+safe_link rvmrc                .rvmrc
