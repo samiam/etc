@@ -28,5 +28,5 @@
 [core]
 	status = true
 	pager = less -FRX
-[push]
-	default = simple
+#[push]
+	#default = simple
