@@ -12,6 +12,7 @@
 (load "init.el")
 (load "functions.el")
 (load "bindings.el")
+(load "fonts.el")
 
 (add-to-list 'load-path "~/.emacs.d/xquery-mode")
 

@@ -37,12 +37,6 @@
 (setq backup-directory-alist
    '(("." . "~/etc/emacs.d/backups")))
 
-;(set-default-font "fixed")
-;(set-default-font "-*-lucidatypewriter-medium-r-*-*-14-*-*-*-*-*-*-*")
-(set-default-font "lucidasanstypewriter-12")
-;(set-default-font "-bitstream-bitstream vera sans mono-medium-r-*-*-*-*-*-*-*-*-*-*")
-;(set-default-font "Inconsolata-14")
-
 ;; Swap alt and command on mac
 (when (eq system-type 'darwin)
   (setq mac-option-key-is-meta nil)
