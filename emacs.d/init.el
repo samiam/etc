@@ -5,6 +5,8 @@
 ;;; $Id$
 ;;; =================================================================
 
+(message "* --[ Loading my Emacs init file ]--")
+
 ;; Variable settings and behavior
 ;; ***************************************************************
 (setq default-major-mode 'text-mode)         ; always text mode
@@ -23,7 +25,7 @@
 (setq font-lock-maximum-decoration t)        ; go all out with color
 ;(setq font-lock-support-mode 'lazy-lock-mode)
 (setq lazy-lock-defer-time 1)                ; give it a sec
-(set-scroll-bar-mode 'right)
+;(set-scroll-bar-mode 'right)                ; emacs 23
 
 (put 'upcase-region 'disabled nil)      ; C-x C-u uppercase region
 (put 'downcase-region 'disabled nil)    ; C-x C-l lowercase region
@@ -33,7 +35,7 @@
 (savehist-mode t)                       ; store minibuffer b/t sessions
 
 (setq backup-directory-alist
-   '(("." . "~/etc/emacs.d/emacs_backups")))
+   '(("." . "~/etc/emacs.d/backups")))
 
 ;(set-default-font "fixed")
 ;(set-default-font "-*-lucidatypewriter-medium-r-*-*-14-*-*-*-*-*-*-*")
@@ -48,7 +50,7 @@
   (setq mac-command-modifier 'meta)
   (setq mac-option-modifier nil))
 
-(setq delete-by-moving-to-trash t)       ; delete by moving to trash
+(setq delete-by-moving-to-trash nil)       ; delete by moving to trash
 
 ;; Subprocess
 ;; ***************************************************************
@@ -72,7 +74,6 @@
 ;; ***************************************************************
 (setq auto-mode-alist
       (append (list
-               '("\\.xqy$"  . xquery-mode)
                '("\\.xslt$"  . nxml-mode)
                '("\\.xml$"  . nxml-mode)
                '("\\.xsh$"  . shell-script-mode)
@@ -92,41 +93,3 @@
 ;; Package setups
 (require 'tramp)
 (setq tramp-default-method "scp")
-
-
-;; Path settings
-;; ***************************************************************
-;(add-to-list 'load-path (expand-file-name "~/etc/emacs.d"))
-
-(message "* --[ Loading my Emacs init file ]--")
-
-;; Path settings
-;; ***************************************************************
-(add-to-list 'load-path (expand-file-name "~/etc/emacs.d"))
-
-(load "functions.el")
-(load "bindings.el")
-(load "ruby-mode.el")
-;(load "xquery-mode.el")
-
-; https://github.com/mblakele/xquery-mode.git
-(load "xquery-mode2.el")
-
-;(load "~/.emacs.d/functions.el")
-;(load "~/.emacs.d/bindings.el")
-
-
-;;; This was installed by package-install.el.
-;;; This provides support for the package system and
-;;; interfacing with ELPA, the package archive.
-;;; Move this code earlier if you want to reference
-;;; packages in your .emacs.
-(when
-    (load
-     (expand-file-name "~/.emacs.d/elpa/package.el"))
-  (package-initialize))
-
-;(add-to-list 'package-archives
-;             '("marmalade" . "http://marmalade-repo.org/packages/") t)
-
-;(slime-setup '(slime-repl))

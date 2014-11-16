@@ -5,11 +5,14 @@
 ;;; $Id$
 ;;; =================================================================
 
-
 ;; Path settings
 ;; ***************************************************************
-(add-to-list 'load-path (expand-file-name "~/etc/emacs.d"))
+(add-to-list 'load-path "~/.emacs.d")
 
-(load "emacs_init.el")
-(load "emacs_functions.el")
-(load "emacs_bindings.el")
+(load "init.el")
+(load "functions.el")
+(load "bindings.el")
+
+(add-to-list 'load-path "~/.emacs.d/xquery-mode")
+
+(load "xquery-mode/setup.el")

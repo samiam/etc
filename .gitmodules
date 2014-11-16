@@ -1,0 +1,3 @@
+[submodule "emacs.d/xquery-mode"]
+	path = emacs.d/xquery-mode
+	url = https://github.com/mblakele/xquery-mode.git
