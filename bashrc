@@ -9,7 +9,7 @@
 if [ "$HOSTTYPE" = "x86_64" -a $(uname -s) != "Darwin" ]; then
   alias ls="ls -CF --color"
 else
-  alias ls='ls -CFH'
+  alias ls='ls -CF'
 fi
 # Number files in dir
 alias lsc="ruby -e 'ARGV.each { |d|
