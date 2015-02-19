@@ -138,3 +138,8 @@ if [[ -s '/usr/local/lib/rvm' ]]; then
       export PS1='\h[\w]\$ '
    fi
 fi
+
+# RBenv
+if which rbenv > /dev/null; then
+  eval "$(rbenv init -)";
+fi
