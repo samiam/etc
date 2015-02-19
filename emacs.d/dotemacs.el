@@ -7,7 +7,7 @@
 
 ;; Path settings
 ;; ***************************************************************
-(add-to-list 'load-path "~/.emacs.d")
+(add-to-list 'load-path "~/.emacs.d/lisp")
 
 (load "init.el")
 (load "functions.el")
@@ -15,5 +15,4 @@
 (load "fonts.el")
 
 (add-to-list 'load-path "~/.emacs.d/xquery-mode")
-
-(load "xquery-mode/setup.el")
+(load "xquery-setup.el")
