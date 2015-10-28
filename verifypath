@@ -1,0 +1,56 @@
+# Source this file  eg.
+# . verifypath
+# export PATH=$(verifypath "$HOME/bin:$PATH)
+
+# Taken from blue:/usr/dist/pkgs/cue/env/std/verifypath and converted to sh
+verifypath () {
+
+     # Remove colon separators if present in input string
+     pathlist=`echo $1 | sed 's/:/ /g'`
+
+     # Ensure proper Usage (Return NULL if improper)
+     if [ -z "$pathlist" ]; then
+       echo ""
+       exit 1
+     fi
+
+     # ==========================
+     # Remove Redundant Pathnames
+     # ==========================
+     filtered=""
+     for nf in $pathlist
+     do
+       redundant=no
+       for f in $filtered
+       do
+	 if [ "$nf" = "$f" ]; then
+	     redundant=yes
+	 fi
+       done
+       if [ "$redundant" != "yes" ]; then
+	 filtered="$filtered $nf"
+       fi
+     done
+     pathlist="$filtered"
+
+     # ===============
+     # Verify pathlist
+     # ===============
+     #
+     # Validate existing directories
+     #
+     newpath=""
+     for dir in $pathlist
+     do
+       if [ -d "$dir" ]; then
+	 if [ -z "$newpath" ]; then
+	     newpath="$dir"
+	 else
+	     newpath="${newpath}:${dir}"
+	 fi
+       fi
+     done
+
+     # Return Verified Path
+     echo $newpath
+}
