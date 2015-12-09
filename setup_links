@@ -33,6 +33,7 @@ safe_link emacs.d/dotemacs.el  .emacs
 
 # Git
 safe_link gitconfig            .gitconfig
+safe_link gitignore            .gitignore
 
 # Ruby
 safe_link irbrc                .irbrc
