@@ -28,7 +28,7 @@
 [core]
 	status = true
 	pager = less -FRX
-	excludesfile = /Users/sam/etc/gitignore
+	excludesfile = ~/.gitignore
 #[push]
 	#default = simple
 [push]
