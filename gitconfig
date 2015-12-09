@@ -31,3 +31,5 @@
 	excludesfile = /Users/sam/etc/gitignore
 #[push]
 	#default = simple
+[push]
+	default = simple
