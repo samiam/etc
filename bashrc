@@ -21,9 +21,15 @@ alias mv='mv -i'
 alias wh='type -a'
 alias bcd='builtin cd'
 alias suu='ssh root@$HOSTNAME'
+alias jobs='jobs -l'
+alias st='set | m'
+alias vi='vim'
+alias hi='history | m'
 if [ "`uname -s`" = "Darwin" ]; then
    alias md5sum=md5
 fi
+alias a2ps='a2ps --prologue=fixed --borders=yes'
+alias ncat='nc'
 
 # Functions
 # ls after cd
@@ -79,7 +85,7 @@ shopt -s extglob        # extended glob; ls -d *[!.gz] list files w/o .gz ext
 
 
 # Command history
-HISTFILE=$HOME/.bash_history.$USER  # keep history files separate
+HISTFILE=$HOME/etc/bash_history # keep history files separate
 HISTCONTROL=ignoredups	        # don't keep duplicate entries in history
 command_oriented_history= 	# save multi-line cmds in one history entry
 HISTFILESIZE=20000  		# how much to remember on logout?
@@ -106,8 +112,6 @@ LESS_TERMCAP_so=$(printf "\e[1;44;33m")
 LESS_TERMCAP_ue=$(printf "\e[0m")
 LESS_TERMCAP_us=$(printf "\e[1;32m")
 
-RSYNC_RSH="ssh"
-
 set +a
 
 # Amazon S3
@@ -124,22 +128,13 @@ export PATH
 # Clean up local vars
 unset -f zedit
 
-# RVM
-if [[ -s '/usr/local/lib/rvm' ]]; then
-   source '/usr/local/lib/rvm'
-   [[ -r $rvm_path/scripts/completion ]] && . $rvm_path/scripts/completion
-
-   # Insert colon after prompt b/f path when not using system ruby
-   my_rvm_prompt() { [[ -n $(rvm-prompt) ]] && echo "$(rvm-prompt):"; }
-
-   if [ "`whoami`" != "root" ]; then
-      export PS1='\h[$(my_rvm_prompt)\w]\$ '
-   else
-      export PS1='\h[\w]\$ '
-   fi
+# Git
+if [ -f /usr/local/share/zsh/site-functions/git-completion.bash ]; then
+  source /usr/local/share/zsh/site-functions/git-completion.bash
 fi
 
-# RBenv
-if which rbenv > /dev/null; then
-  eval "$(rbenv init -)";
+# chruby
+if [ -f /usr/local/opt/chruby/share/chruby/chruby.sh ]; then
+  source /usr/local/opt/chruby/share/chruby/chruby.sh
+  source /usr/local/opt/chruby/share/chruby/auto.sh
 fi
