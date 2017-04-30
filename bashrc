@@ -6,11 +6,12 @@
 [ ! "$PS1" ] && return 0
 
 # Aliases
-if [ "$HOSTTYPE" = "x86_64" -a $(uname -s) != "Darwin" ]; then
-  alias ls="ls -CF --color"
-else
-  alias ls='ls -CF'
-fi
+case "$(uname -s)" in
+  Darwin)  color="-G"  ;;
+  Linux)   color="--color"  ;;
+esac
+alias ls="ls -CF $color"
+
 # Number files in dir
 alias lsc="ruby -e 'ARGV.each { |d|
   puts Dir.open(d).entries.count - 2 if File.directory?(d)
@@ -30,11 +31,20 @@ if [ "`uname -s`" = "Darwin" ]; then
 fi
 alias a2ps='a2ps --prologue=fixed --borders=yes'
 alias ncat='nc'
+alias ppjson='python -m json.tool'
 
 # Functions
 # ls after cd
 function cd () { 
-  builtin cd "$@" && ls; 
+  builtin cd "$@" && set_prompt && ls
+}
+
+function set_prompt {
+  if [ ${#PWD} -gt 50 ]; then
+    export PS1='\h[\W]\$ '    # short path
+  else
+    export PS1='\h[\w]\$ '    # set the main prompt
+  fi
 }
 
 # recursive up function inspired by the non-recursive version of terry jones
@@ -85,11 +95,12 @@ shopt -s extglob        # extended glob; ls -d *[!.gz] list files w/o .gz ext
 
 
 # Command history
-HISTFILE=$HOME/etc/bash_history # keep history files separate
-HISTCONTROL=ignoredups	        # don't keep duplicate entries in history
-command_oriented_history= 	# save multi-line cmds in one history entry
-HISTFILESIZE=20000  		# how much to remember on logout?
-HISTSIZE=20000  		# how much to remember in session?
+HISTFILE=$HOME/etc/bash_history  # keep history files separate
+HISTCONTROL=ignoredups:erasedups # don't keep duplicate entries in history
+command_oriented_history= 	 # save multi-line cmds in one history entry
+HISTFILESIZE=200000  		 # how much to remember on logout?
+HISTSIZE=200000  		 # how much to remember in session?
+shopt -s histappend              # append to history
 
 # Program settings
 EDITOR=`zedit`                  # what's my favorite editor?
