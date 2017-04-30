@@ -125,19 +125,18 @@ LESS_TERMCAP_us=$(printf "\e[1;32m")
 
 set +a
 
+# Clean up local vars
+unset -f zedit
+
+# PATH
+. ~/etc/verifypath
+PATH="$HOME/bin:/usr/local/sbin:$PATH"
+export PATH=$(verifypath "$PATH")
+
 # Amazon S3
 if [ -f "$HOME/.ssh/aws/s3keys" ]; then
    source "$HOME/.ssh/aws/s3keys"
 fi
-
-#
-# Path environment
-#
-PATH="$HOME/bin:$PATH"
-export PATH
-
-# Clean up local vars
-unset -f zedit
 
 # Git
 if [ -f /usr/local/share/zsh/site-functions/git-completion.bash ]; then
@@ -150,5 +149,19 @@ if [ -f /usr/local/opt/chruby/share/chruby/chruby.sh ]; then
   source /usr/local/opt/chruby/share/chruby/auto.sh
 fi
 
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
+# bash-completion
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+  . $(brew --prefix)/etc/bash_completion
+fi
+eval "$(direnv hook bash)"
+
+# ssh
+ssh-add -L &> /dev/null
+if [ $? -eq 1 ]; then
+  ssh-add -K
+fi
+
+# local
+if [ -f $HOME/etc/bash_local ]; then
+  . $HOME/etc/bash_local
+fi
