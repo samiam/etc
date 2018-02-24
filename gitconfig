@@ -36,3 +36,6 @@
 	default = simple
 #[pull]
 	#rebase = true
+
+# See revisions of file
+#for c in $(git log --pretty=%H ); do git show $c:file; done
