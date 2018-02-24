@@ -130,8 +130,8 @@ unset -f zedit
 
 # PATH
 . ~/etc/verifypath
-PATH="$HOME/bin:/usr/local/sbin:$PATH"
-export PATH=$(verifypath "$PATH")
+PATH=$HOME/binp:/usr/local/sbin:$PATH
+export PATH=$(verifypath $PATH)
 
 # Amazon S3
 if [ -f "$HOME/.ssh/aws/s3keys" ]; then
