@@ -60,8 +60,9 @@ function u () {
 
 # Pick one
 function zedit () {
-  if [ -x $HOME/bin/myedit ]; then
-     echo $HOME/bin/myedit
+  type -P myedit > /dev/null
+  if [ $? -eq 0 ]; then
+     echo myedit
   else
      echo vi
   fi
