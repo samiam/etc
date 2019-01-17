@@ -7,47 +7,28 @@
 
 # Aliases
 case "$(uname -s)" in
-  Darwin)  color="-G"  ;;
+  Darwin)  color="-G"
+           alias md5sum=md5
+           ;;
   Linux)   color="--color"  ;;
 esac
-alias ls="ls -CF $color"
 
-# Number files in dir
-alias lsc="ruby -e 'ARGV.each { |d|
-  puts Dir.open(d).entries.count - 2 if File.directory?(d)
-}'"
+alias ls="ls -CF $color"
 alias m=less
 alias cp='cp -ip'
 alias mv='mv -i'
 alias wh='type -a'
 alias bcd='builtin cd'
-alias suu='ssh root@$HOSTNAME'
 alias jobs='jobs -l'
 alias st='set | m'
 alias vi='vim'
 alias hi='history | m'
-if [ "`uname -s`" = "Darwin" ]; then
-   alias md5sum=md5
-   alias sha256='shasum -a 256'
-fi
-alias a2ps='a2ps --prologue=fixed --borders=yes'
-alias ncat='nc'
 alias ppjson='python -m json.tool'
-#alias netstat='ss'
-alias vpp='vagrant provision --provision-with puppet'
 
 # Functions
 # ls after cd
 function cd () { 
-  builtin cd "$@" && set_prompt && ls
-}
-
-function set_prompt {
-  if [ ${#PWD} -gt 50 ]; then
-    export PS1='\h[\W]\$ '    # short path
-  else
-    export PS1='\h[\w]\$ '    # set the main prompt
-  fi
+  builtin cd "$@" && ls
 }
 
 # recursive up function inspired by the non-recursive version of terry jones
@@ -58,22 +39,6 @@ function u () {
        u $[ $1 - 1 ]; 
   else
        cd .
-  fi
-}
-
-# Pick one
-function zedit () {
-  if [ -x $HOME/bin/myedit ]; then
-     echo $HOME/bin/myedit
-  else
-     echo vi
-  fi
-}
-
-function long_path () {
-  tmp=$(pwd)
-  if [ ${#tmp} -gt 50 ]; then
-    export  PS1='\u@\h[\W]\$ '    # set the main prompt
   fi
 }
 
@@ -106,9 +71,8 @@ HISTSIZE=200000  		 # how much to remember in session?
 shopt -s histappend              # append to history
 
 # Program settings
-EDITOR=`zedit`                  # what's my favorite editor?
+EDITOR=vi                  # what's my favorite editor?
 VISUAL=$EDITOR	
-
 # VI settings  - wm=wrap margins at 70-char
 EXINIT='set redraw wm=10 showmode showmatch'
 
@@ -128,51 +92,43 @@ LESS_TERMCAP_us=$(printf "\e[1;32m")
 
 set +a
 
-# Clean up local vars
-unset -f zedit
+#
+# Path environment
+#
+export VBOX_INSTALL_PATH=/Applications/VirtualBox.app/Contents/MacOS
+PATH="$HOME/bin:/usr/local/sbin:$PATH:$VBOX_INSTALL_PATH"
 
-# PATH
-. ~/etc/verifypath
-PATH="$HOME/bin:/usr/local/sbin:$PATH"
-export PATH=$(verifypath "$PATH")
-
-# Amazon S3
-if [ -f "$HOME/.ssh/aws/s3keys" ]; then
-   source "$HOME/.ssh/aws/s3keys"
-fi
-
-# Git
-if [ -f /usr/local/share/zsh/site-functions/git-completion.bash ]; then
-  source /usr/local/share/zsh/site-functions/git-completion.bash
-fi
+# Brew app setup
+brew_prefix=$(brew --prefix)
 
 # chruby
-if [ -f /usr/local/opt/chruby/share/chruby/chruby.sh ]; then
-  source /usr/local/opt/chruby/share/chruby/chruby.sh
-  source /usr/local/opt/chruby/share/chruby/auto.sh
+# brew install chruby ruby-install
+# https://github.com/postmodern/chruby
+if [ -f $brew_prefix/share/chruby/chruby.sh ]; then
+  source $brew_prefix/share/chruby/chruby.sh
+  source $brew_prefix/share/chruby/auto.sh
+fi
+
+# bash-git-prompt
+# brew install bash-git-prompt
+# https://github.com/magicmonty/bash-git-prompt
+if [ -f "$brew_prefix/opt/bash-git-prompt/share/gitprompt.sh" ]; then
+  __GIT_PROMPT_DIR=$brew_prefix/opt/bash-git-prompt/share
+  GIT_PROMPT_ONLY_IN_REPO=0
+  GIT_PROMPT_THEME=Custom
+  source "$brew_prefix/opt/bash-git-prompt/share/gitprompt.sh"
 fi
 
 # bash-completion
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-  . $(brew --prefix)/etc/bash_completion
-fi
-eval "$(direnv hook bash)"
+# brew install bash-completion
+# https://github.com/scop/bash-completion
+[[ $PS1 && -f $brew_prefix/etc/bash_completion ]] && \
+  source $brew_prefix/etc/bash_completion
 
-# git bash-completion
-if [ -f "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh" ]; then
-  __GIT_PROMPT_DIR=$(brew --prefix)/opt/bash-git-prompt/share
-#  GIT_PROMPT_SHOW_CHANGED_FILES_COUNT=0 # uncomment to avoid printing the number of changed files
-  GIT_PROMPT_THEME=Custom
-  source "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh"
-fi
+unset brew_prefix
 
 # ssh
 ssh-add -L &> /dev/null
 if [ $? -eq 1 ]; then
   ssh-add -K
-fi
-
-# local
-if [ -f $HOME/etc/bash_local ]; then
-  . $HOME/etc/bash_local
 fi
