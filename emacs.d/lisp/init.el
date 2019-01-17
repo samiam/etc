@@ -34,8 +34,13 @@
 (column-number-mode t)
 (savehist-mode t)                       ; store minibuffer b/t sessions
 
-(setq backup-directory-alist
-   '(("." . "~/etc/emacs.d/backups")))
+(setq
+   backup-directory-alist  '(("." . "~/etc/emacs.d/backups"))
+   delete-old-versions     t
+   kept-new-versions       6
+   kept-old-versions       2
+   version-control         t )
+
 
 ;; Swap alt and command on mac
 (when (eq system-type 'darwin)
@@ -80,6 +85,7 @@
                '("\\.erb$"  . my-html-mode)
                '("\\.sass$"  . my-html-mode)
                '("\\.haml$"  . my-html-mode)
+               '("\\.t$"  . perl-mode)
                 )
               auto-mode-alist))
 

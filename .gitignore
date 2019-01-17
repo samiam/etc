@@ -2,3 +2,5 @@ bash_history
 lesshst
 irb_history
 !.gitignore
+emacs.d/auto-save-list
+emacs.d/backups
