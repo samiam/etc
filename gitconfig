@@ -28,6 +28,11 @@
 	diffc = diff --cached
 	# git compare master...heroku/master
 	compare = log --left-right --graph --cherry-pick --oneline
+	# https://stackoverflow.com/questions/9725531/show-commits-since-branch-creation
+	# Assuming on branch, show changes since branched
+	comp = log --oneline master..
+	compC = cherry -v master
+	safe-push = push --force-with-lease
 
 [core]
 	status = true
