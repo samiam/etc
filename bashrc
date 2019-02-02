@@ -120,12 +120,25 @@ if [ -f "$brew_prefix/opt/bash-git-prompt/share/gitprompt.sh" ]; then
 fi
 
 # bash-completion
-# brew install bash-completion
+# brew install bash-completion@2
 # https://github.com/scop/bash-completion
-[[ $PS1 && -f $brew_prefix/etc/bash_completion ]] && \
-  source $brew_prefix/etc/bash_completion
+if [[ -r $brew_prefix/etc/profile.d/bash_completion.sh ]]; then
+  export BASH_COMPLETION_COMPAT_DIR=$brew_prefix/etc/bash_completion.d
+  source $brew_prefix/etc/profile.d/bash_completion.sh
+fi
 
 unset brew_prefix
+
+# pyenv & pyenv-virtualenv
+# brew install pyenv pyenv-virtualenv
+# brew should point to pyenv versions to avoid duplicates
+# ln -s ~/.pyenv/versions $(brew --cellar python@2)
+# ln -s ~/.pyenv/versions $(brew --cellar python@3)
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
 
 # ssh
 ssh-add -L &> /dev/null
