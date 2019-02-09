@@ -10,7 +10,8 @@ case "$(uname -s)" in
   Darwin)  color="-G"
            alias md5sum=md5
            ;;
-  Linux)   color="--color"  ;;
+  Linux)   color="--color"
+           ;;
 esac
 
 alias ls="ls -CF $color"
@@ -63,12 +64,13 @@ shopt -s extglob        # extended glob; ls -d *[!.gz] list files w/o .gz ext
 
 
 # Command history
+set -o history                   # enable
+shopt -s cmdhist                 # save multi-line cmds in one history entry
+shopt -s histappend              # append to history
 HISTFILE=$HOME/etc/bash_history  # keep history files separate
 HISTCONTROL=ignoredups:erasedups # don't keep duplicate entries in history
-command_oriented_history= 	 # save multi-line cmds in one history entry
 HISTFILESIZE=200000  		 # how much to remember on logout?
 HISTSIZE=200000  		 # how much to remember in session?
-shopt -s histappend              # append to history
 
 # Program settings
 EDITOR=vi                  # what's my favorite editor?
