@@ -4,7 +4,6 @@
 :verbose: true
 :sources:
   - http://rubygems.org/
-  - http://gems.github.com/
 
 gem: --no-rdoc --no-ri --no-document
 install: --no-rdoc --no-ri --no-document
