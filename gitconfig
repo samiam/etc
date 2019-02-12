@@ -35,7 +35,6 @@
 	safe-push = push --force-with-lease
 
 [core]
-	status = true
 	pager = less -FRX
 	excludesfile = ~/.gitignore
 	editor = vim
@@ -45,6 +44,8 @@
 	default = simple
 #[pull]
 	#rebase = true
+[pager]
+	status = true
 
 # See revisions of file
 #for c in $(git log --pretty=%H ); do git show $c:file; done
