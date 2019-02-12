@@ -23,13 +23,17 @@ function safe_link () {
   fi
 }
 
-# Bash
+perl -v > /dev/null || { echo "Perl is not installed"; exit 1; }
+
+# Shell
 safe_link bash_profile         .bash_profile
 safe_link bashrc               .bashrc
+safe_link git-prompt-colors.sh .git-prompt-colors.sh
 
-# Emacs
+# Editor
 safe_link emacs.d              .emacs.d
 safe_link emacs.d/dotemacs.el  .emacs
+safe_link vimrc                .vimrc
 
 # Git
 safe_link gitconfig            .gitconfig
