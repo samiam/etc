@@ -64,7 +64,6 @@ shopt -s extglob        # extended glob; ls -d *[!.gz] list files w/o .gz ext
 
 
 # Command history
-set -o history                   # enable
 shopt -s cmdhist                 # save multi-line cmds in one history entry
 shopt -s histappend              # append to history
 HISTFILE=$HOME/etc/bash_history  # keep history files separate
@@ -100,8 +99,8 @@ set +a
 export VBOX_INSTALL_PATH=/Applications/VirtualBox.app/Contents/MacOS
 PATH="$HOME/bin:/usr/local/sbin:$PATH:$VBOX_INSTALL_PATH"
 
-# Brew app setup
-brew_prefix=$(brew --prefix)
+# Brew app setup: $(brew --prefix)
+brew_prefix="/usr/local"
 
 # chruby
 # brew install chruby ruby-install
@@ -141,6 +140,10 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
+# Heroku
+if [ -f $HOME/Library/Caches/heroku/autocomplete/bash_setup ]; then
+  source $HOME/Library/Caches/heroku/autocomplete/bash_setup
+fi
 
 # ssh
 ssh-add -L &> /dev/null
