@@ -33,19 +33,26 @@
 	comp = log --oneline master..
 	compC = cherry -v master
 	safe-push = push --force-with-lease
+	rubocop = "!f() { git diff --name-only | xargs -n1 bundle exec rubocop; }; f"
+	diffm = diff -p master...   # all changes on branch
 
 [core]
 	pager = less -FRX
 	excludesfile = ~/.gitignore
 	editor = vim
-#[push]
-	#default = simple
+
 [push]
 	default = simple
-#[pull]
-	#rebase = true
+
+[pull]
+	rebase = false
+
 [pager]
 	status = true
 
 # See revisions of file
 #for c in $(git log --pretty=%H ); do git show $c:file; done
+
+#[includeIf "gitdir:~/Documents/_repos/"]
+#    path = ~/Documents/_repos/.gitconfig
+#Is useful if you keep all your non-cmm repos in a single place, you can config that dir differently

@@ -135,10 +135,21 @@ unset brew_prefix
 # brew should point to pyenv versions to avoid duplicates
 # ln -s ~/.pyenv/versions $(brew --cellar python@2)
 # ln -s ~/.pyenv/versions $(brew --cellar python@3)
+# Usage:
+# pyenv local --unset
+# pyenv versions
+# pyenv virtualenvs
+# pyenv activate <name>
+# pyenv deactivate
+# pyenv shell VERSION
+# pyenv shell --unset
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+command -v pyenv > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+fi
 
 # Heroku
 if [ -f $HOME/Library/Caches/heroku/autocomplete/bash_setup ]; then
