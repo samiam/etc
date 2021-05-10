@@ -1,6 +1,6 @@
 [user]
 	name = Sam
-	email = samnap+github@gmail.com
+	email = 106220+samiam@users.noreply.github.com
 
 [color]
 	diff = auto
@@ -36,10 +36,17 @@
 	rubocop = "!f() { git diff --name-only | xargs -n1 bundle exec rubocop; }; f"
 	diffm = diff -p master...   # all changes on branch
 
+	# Is local branch up in remote repo w/same version
+	#pushed = "!f() { for f in $(git branch --list --format '%(refname)' | grep -v refs/heads/master); do echo $f; \
+        #                   local=$(git log -1 --pretty=oneline $f); \
+        #                   remote=$(git ls-remote origin $f); \
+        #                   echo $local $remote; \
+        #                 done;}; f"
+
 [core]
 	pager = less -FRX
 	excludesfile = ~/.gitignore
-	editor = vim
+	editor = vi
 
 [push]
 	default = simple
@@ -56,3 +63,8 @@
 #[includeIf "gitdir:~/Documents/_repos/"]
 #    path = ~/Documents/_repos/.gitconfig
 #Is useful if you keep all your non-cmm repos in a single place, you can config that dir differently
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
