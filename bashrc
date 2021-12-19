@@ -159,5 +159,10 @@ fi
 # ssh
 ssh-add -L &> /dev/null
 if [ $? -eq 1 ]; then
-  ssh-add -K
+  os_ver=$(uname -r | cut -d. -f1)
+  if [[ $os_ver -ge 21 ]]; then
+    ssh-add --apple-use-keychain
+  else
+    ssh-add -K
+  fi
 fi
