@@ -28,16 +28,16 @@ alias ppjson='python -m json.tool'
 
 # Functions
 # ls after cd
-function cd () { 
+function cd () {
   builtin cd "$@" && ls
 }
 
 # recursive up function inspired by the non-recursive version of terry jones
-function u () { 
-  if [ ${1:-1} -gt 0 ]; 
-  then 
-       builtin cd ..; 
-       u $[ $1 - 1 ]; 
+function u () {
+  if [ ${1:-1} -gt 0 ];
+  then
+       builtin cd ..;
+       u $[ $1 - 1 ];
   else
        cd .
   fi
@@ -73,7 +73,7 @@ HISTSIZE=200000  		 # how much to remember in session?
 
 # Program settings
 EDITOR=vi                  # what's my favorite editor?
-VISUAL=$EDITOR	
+VISUAL=$EDITOR
 # VI settings  - wm=wrap margins at 70-char
 EXINIT='set redraw wm=10 showmode showmatch'
 
@@ -97,15 +97,21 @@ set +a
 # Path environment
 #
 export VBOX_INSTALL_PATH=/Applications/VirtualBox.app/Contents/MacOS
-PATH="$HOME/bin:/usr/local/sbin:$PATH:$VBOX_INSTALL_PATH"
+PATH="$HOME/binp:/usr/local/sbin:$PATH:$VBOX_INSTALL_PATH"
 
 # Brew app setup: $(brew --prefix)
 brew_prefix="/usr/local"
 
+# Brew basics
+# bash curl git jq lastpass-cli rclone tmux
+
+# Gem basics
+# gem install bundler eyaml-hiera
+
 # chruby
 # brew install chruby ruby-install
 # https://github.com/postmodern/chruby
-if [ -f $brew_prefix/share/chruby/chruby.sh ]; then
+if [[ -f $brew_prefix/share/chruby/chruby.sh ]]; then
   source $brew_prefix/share/chruby/chruby.sh
   source $brew_prefix/share/chruby/auto.sh
 fi
@@ -113,12 +119,18 @@ fi
 # bash-git-prompt
 # brew install bash-git-prompt
 # https://github.com/magicmonty/bash-git-prompt
-if [ -f "$brew_prefix/opt/bash-git-prompt/share/gitprompt.sh" ]; then
+if [[ -f $brew_prefix/opt/bash-git-prompt/share/gitprompt.sh ]]; then
   __GIT_PROMPT_DIR=$brew_prefix/opt/bash-git-prompt/share
   GIT_PROMPT_ONLY_IN_REPO=0
   GIT_PROMPT_THEME=Custom
   source "$brew_prefix/opt/bash-git-prompt/share/gitprompt.sh"
 fi
+
+# sets the tab title to current dir
+function prompt_callback {
+  #echo -ne "\e]1;${PWD##${HOME}/}\a"
+  gp_set_window_title "\w"
+}
 
 # bash-completion
 # brew install bash-completion@2
@@ -127,6 +139,7 @@ if [[ -r $brew_prefix/etc/profile.d/bash_completion.sh ]]; then
   export BASH_COMPLETION_COMPAT_DIR=$brew_prefix/etc/bash_completion.d
   source $brew_prefix/etc/profile.d/bash_completion.sh
 fi
+
 
 unset brew_prefix
 
@@ -159,5 +172,5 @@ fi
 # ssh
 ssh-add -L &> /dev/null
 if [ $? -eq 1 ]; then
-  ssh-add -K
+  ssh-add --apple-use-keychain
 fi
