@@ -1,0 +1,9 @@
+# default youtube-dl options
+--extract-audio
+--audio-format mp3
+--add-metadata
+#--metadata-from-title "%(artist)s - %(title)s - %(album)s"
+--metadata-from-title "%(artist)s - %(title)s.%(ext)s"
+#--prefer-avconv
+#--output '%(title)s.%(ext)s'
+--format bestaudio
