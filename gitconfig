@@ -35,6 +35,7 @@
 	safe-push = push --force-with-lease
 	rubocop = "!f() { git diff --name-only | xargs -n1 bundle exec rubocop; }; f"
 	diffm = diff -p master...   # all changes on branch
+	reflogd = reflog --date=iso
 
 	# Is local branch up in remote repo w/same version
 	#pushed = "!f() { for f in $(git branch --list --format '%(refname)' | grep -v refs/heads/master); do echo $f; \
