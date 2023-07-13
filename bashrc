@@ -143,25 +143,25 @@ unset brew_prefix
 # pyenv deactivate
 # pyenv shell VERSION
 # pyenv shell --unset
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
 command -v pyenv > /dev/null 2>&1
 if [ $? -eq 0 ]; then
+  export PYENV_ROOT="$HOME/.pyenv"
+  export PATH="$PYENV_ROOT/bin:$PATH"
   eval "$(pyenv init -)"
   eval "$(pyenv virtualenv-init -)"
 fi
 
 # Heroku
-if [ -f $HOME/Library/Caches/heroku/autocomplete/bash_setup ]; then
-  source $HOME/Library/Caches/heroku/autocomplete/bash_setup
-fi
+#if [ -f $HOME/Library/Caches/heroku/autocomplete/bash_setup ]; then
+#  source $HOME/Library/Caches/heroku/autocomplete/bash_setup
+#fi
 
 # ssh
 ssh-add -L &> /dev/null
 if [ $? -eq 1 ]; then
   os_ver=$(uname -r | cut -d. -f1)
   if [[ $os_ver -ge 21 ]]; then
-    ssh-add --apple-use-keychain
+    ssh-add --apple-use-keychain ~/.ssh/id_ed25519
   else
     ssh-add -K
   fi
