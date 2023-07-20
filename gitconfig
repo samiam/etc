@@ -34,12 +34,13 @@
 	compC = cherry -v master
 	safe-push = push --force-with-lease
 	rubocop = "!f() { git diff --name-only | xargs -n1 bundle exec rubocop; }; f"
-        # all changes on branch
-        diffm = !git diff -p $(basename $(git symbolic-ref refs/remotes/origin/HEAD))
-        #dv = difftool -t vimdiff -y
-        reflogd = reflog --date=iso
-
-        stashl = stash list --pretty=format:\"%C(red)%h%C(reset) - %C(dim yellow)(%C(bold magenta)%gd%C(dim yellow))%C(reset) %<(70,trunc)%s %C(green)(%cr) %C(bold blue)<%an>%C(reset)\"
+  #dv = difftool -t vimdiff -y
+  reflogd = reflog --date=iso
+  stashl = stash list --pretty=format:\"%C(red)%h%C(reset) - %C(dim yellow)(%C(bold magenta)%gd%C(dim yellow))%C(reset) %<(70,trunc)%s %C(green)(%cr) %C(bold blue)<%an>%C(reset)\"
+  # all changes on branch
+  diffm = !git diff -p $(basename $(git symbolic-ref refs/remotes/origin/HEAD))
+	#diffm = diff -p master...   # all changes on branch
+  #diffm = "!f() { git diff -p $(basename $(git symbolic-ref refs/remotes/origin/HEAD )) ; }; f"
 
 	# Is local branch up in remote repo w/same version
 	#pushed = "!f() { for f in $(git branch --list --format '%(refname)' | grep -v refs/heads/master); do echo $f; \
